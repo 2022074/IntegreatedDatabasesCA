@@ -4,6 +4,7 @@
  */
 package integreateddatabasesca;
 
+
 /**
  *
  * GitHub Link: https://github.com/2022074/IntegreatedDatabasesCA
@@ -17,8 +18,9 @@ public class IntegreatedDatabasesCA {
      */
     public static void main(String[] args) {
         
-        
-        
+        GUI gui = new GUI();
+       
+        gui.useGUI();
     }
     
 }
