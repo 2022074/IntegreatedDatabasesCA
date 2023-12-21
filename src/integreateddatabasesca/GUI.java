@@ -28,6 +28,10 @@ public class GUI {
                 switch(choice1){
                     case 1:
                         System.out.println("Please enter your username and password: ");
+                        /*System.out.println("username?");
+                        sc.nextLine();
+                        System.out.println("password?");
+                        sc.nextLine();*/
                         Users user = authenticateUser(sc.next(), sc.next()); //Here is where the method is being used to identify the user
                         if (user != null) {
                         UserType userType = user.getUserType();
