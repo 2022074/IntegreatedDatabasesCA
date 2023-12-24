@@ -4,34 +4,67 @@
  */
 package integreateddatabasesca;
 
- * @author achap
+ /* 
+ *@author achap
  */
  
 public class Taxes {
-    int incomeGross;
-    int taxCredits;
+    int calculationId;
+    String taxesType;
+    int userId;
+    String status;
+    int income;
     int taxesOwed;
+    int tacesCredit;
 
-    public Taxes(int incomeGross, int taxCredits, int taxesOwed) {
-        this.incomeGross = incomeGross;
-        this.taxCredits = taxCredits;
+    public Taxes(int calculationId, String taxesType, int userId, String status, int income, int taxesOwed, int tacesCredit) {
+        this.calculationId = calculationId;
+        this.taxesType = taxesType;
+        this.userId = userId;
+        this.status = status;
+        this.income = income;
         this.taxesOwed = taxesOwed;
+        this.tacesCredit = tacesCredit;
     }
 
-    public int getIncomeGross() {
-        return incomeGross;
+    public int getCalculationId() {
+        return calculationId;
     }
 
-    public void setIncomeGross(int incomeGross) {
-        this.incomeGross = incomeGross;
+    public void setCalculationId(int calculationId) {
+        this.calculationId = calculationId;
     }
 
-    public int getTaxCredits() {
-        return taxCredits;
+    public String getTaxesType() {
+        return taxesType;
     }
 
-    public void setTaxCredits(int taxCredits) {
-        this.taxCredits = taxCredits;
+    public void setTaxesType(String taxesType) {
+        this.taxesType = taxesType;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getIncome() {
+        return income;
+    }
+
+    public void setIncome(int income) {
+        this.income = income;
     }
 
     public int getTaxesOwed() {
@@ -41,7 +74,13 @@ public class Taxes {
     public void setTaxesOwed(int taxesOwed) {
         this.taxesOwed = taxesOwed;
     }
-    
-    
+
+    public int getTacesCredit() {
+        return tacesCredit;
+    }
+
+    public void setTacesCredit(int tacesCredit) {
+        this.tacesCredit = tacesCredit;
+    }
 }
 
