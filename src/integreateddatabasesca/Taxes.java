@@ -4,10 +4,9 @@
  */
 package integreateddatabasesca;
 
-/**
- *
  * @author achap
  */
+ 
 public class Taxes {
     int incomeGross;
     int taxCredits;
@@ -45,3 +44,4 @@ public class Taxes {
     
     
 }
+
