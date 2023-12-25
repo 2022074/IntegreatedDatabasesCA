@@ -56,7 +56,7 @@ public class GUI {
                                 } else {
                                     System.out.println("Failed to update profile. Please try again.");
                                 }
-                                
+                                break;
                             case 2: //This case makes use of the removeUser method, which only the admin is allowed to use to remove a certain user from the database
                                 System.out.println("Enter the username of the user to be removed: ");
                                 String usernameToRemove = sc.next();
@@ -105,7 +105,6 @@ public class GUI {
                                 String newUsername = sc.next();
                                 System.out.println("Password: ");
                                 String newPassword = sc.next();
-                                System.out.println("This is your new profile: " + newFirstName + newLastName + newUsername + newPassword);
                                 ModifyProfile newUser = new ModifyProfile(user.getId(), newFirstName, newLastName, newUsername, newPassword);
                                 // Update the user in the database
                                 boolean updateSuccess = Database.updateProfile(newUser);
@@ -152,6 +151,7 @@ public class GUI {
                 System.out.println("Please enter the Details for your new account:|username|password|first_name|last_name|gender|email|marital_status|if_married_both_work|children|Id|employee_id|userType|");
                 Users newUser =  new Users(sc.next(), sc.next(), sc.next(), sc.next(), sc.next(), sc.next(), sc.next(), sc.nextBoolean(), sc.nextBoolean(), sc.nextInt() , sc.nextInt() ,sc.nextBoolean());
                 Database.insertUser(newUser);
+                break;
             default:
                 System.out.println("Oh uh, that was not an available option, try again.");
         }

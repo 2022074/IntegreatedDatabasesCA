@@ -59,11 +59,11 @@ public class Database{
              Statement stmt = conn.createStatement()) {
 
             String query = String.format(
-                    "INSERT INTO users (username, user_id, first_name, last_name, password, gender, email, marital_status, if_married_both_work, children, admin, employee_id) " +
+                    "INSERT INTO users (first_name, last_name, username, password, gender, email, marital_status, if_married_both_work, children, user_type, employee_id, user_id) " +
                             "VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')",
-                    user.getUsername(), user.getId(), user.getFirstName(), user.getLastName(), user.getPassword(),
-                    user.getGender(), user.getEmail(), user.getMarital_status(), user.isIf_married_both_work(),
-                    user.isChildren(), user.getUserType(), user.getEmployeeID());
+                    user.getFirstName(), user.getLastName(), user.getUsername(), user.getPassword(), user.getGender(),
+                    user.getEmail(), user.getMarital_status(), user.isIf_married_both_work(), user.isChildren(),
+                    user.getUserType(), user.getEmployeeID(), user.getId());
 
             stmt.executeUpdate(query);
             System.out.println("User inserted into the database.");
@@ -188,7 +188,7 @@ public class Database{
             pstmt.setInt(5, user.getId());
 
             // Execute the update
-            int rowsUpdated = pstmt.executeUpdate(updateQuery);
+            int rowsUpdated = pstmt.executeUpdate();
 
             // Check if the update was successful
             return rowsUpdated > 0;
