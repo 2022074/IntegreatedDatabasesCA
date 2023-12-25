@@ -106,5 +106,76 @@ public class Database{
             return null;
         }
     }
+    
+    public static void removeUser(String usernameToRemove) { //This method allows the admin to remove user that they want to
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD); //It begins by making sure that they are connected as the admin
+             Statement stmt = conn.createStatement()) {
 
+            String query = String.format("DELETE FROM users WHERE username ='%s'", usernameToRemove); //This is an SQL query that uses the method String.format 
+                                                                                                                //to insert the DELETE statement to remove any user the admin wants, thanks to the `%s` which will be replaced by the username provided
+            int affectedRows = stmt.executeUpdate(query); //This variable is here in order to register if there were any changes made to the number of rows in the database                                                   
+
+            if (affectedRows > 0) { //Now we can make use of the previous variable and give confirmation that the user was deleted or not
+                System.out.println("User removed successfully!");
+            } else {
+                System.out.println("User not found or removal failed.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception appropriately
+        }
+    }
+    
+    public static Taxes getTaxes(int idUser) { //This method allows for the admin to show all the taxes that each user owes
+        try(Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD); //We begin bny authenticating the admin
+            Statement stmt = conn.createStatement();){
+            // Object that stores the result of our query
+            ResultSet results = stmt.executeQuery(String.format( //We use a similar query to the previous method to get information from one of the tables inside the database by the user id
+                    "SELECT * FROM calculations WHERE user_id='%s';",
+                    idUser));
+            if(!results.next()) {
+                return null;
+            }else{ //If the user exists, the method will provide all the information about them that are under this comment in that order
+                int calculation_id = results.getInt("calculation_id");
+                String taxes_type = results.getString("taxes_type");
+                int id = results.getInt("user_id");
+                String status = results.getString("status");
+                int income = results.getInt("income");
+                int taxes_owed = results.getInt("taxes_owed");
+                int taxes_credit = results.getInt("taxes_credit");
+                Taxes taxes = new Taxes(calculation_id,taxes_type,id,status,income, taxes_owed,taxes_credit);
+                return taxes;
+                }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
+    public static ArrayList<Taxes> getTaxList() { //This method does something similar to the one above but with the big difference that it stores the info of every user inside a List
+        ArrayList<Taxes> taxList = new ArrayList<>();
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD); //It checks that the admin is the one trying to perform the method
+             Statement stmt = conn.createStatement();
+             ResultSet results = stmt.executeQuery("SELECT * FROM users;")) { //And has a query to choose the users table from the database to take the information from
+
+            while (results.next()) { //And we use the while loop to keep gathering info from every row according to what is being asked for and stores it in a List
+                int calculation_id = results.getInt("calculation_id");
+                String taxes_type = results.getString("taxes_type");
+                int id = results.getInt("user_id");
+                String status = results.getString("status");
+                int income = results.getInt("income");
+                int taxes_owed = results.getInt("taxes_owed");
+                int taxes_credit = results.getInt("taxes_credit");
+                Taxes tax = new Taxes(calculation_id,taxes_type,id,status,income, taxes_owed,taxes_credit);
+                taxList.add(tax);
+            }
+            return taxList;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
 }
