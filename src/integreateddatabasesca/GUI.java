@@ -49,7 +49,12 @@ public class GUI {
                                 System.out.println("Password: ");
                                 String newPassword = sc.next();
                                 break;
-                            case 2:
+                                
+                            case 2: //This case makes use of the removeUser method, which only the admin is allowed to use to remove a certain user from the database
+                                System.out.println("Enter the username of the user to be removed: ");
+                                String usernameToRemove = sc.next();
+                                Database.removeUser(usernameToRemove);
+                                break;
                                 
                             case 3:
                                 System.out.println("List of users:");
@@ -65,8 +70,14 @@ public class GUI {
                                 System.out.println("Both Work If Married: " + u.isIf_married_both_work());
                                 System.out.println("Children: " + u.isChildren());}
                                 break;
-                            case 4:
-                               
+                                
+                            case 4: //This case is for checking all the users income and taxes at the same time since they're stored inside a List
+                               System.out.println("Tax information:");
+                                ArrayList<Taxes> taxList = Database.getTaxList();
+                                for (Taxes t : taxList) {
+                                System.out.println("Income: " + t.getIncome());
+                                System.out.println("Taxes owed: " + t.getTaxesOwed());}
+                                break;
                         }
                     } else{
                         System.out.println("What would you like to do?\n" +
@@ -86,10 +97,30 @@ public class GUI {
                                 System.out.println("Password: ");
                                 String newPassword = sc.next();
                                 break;
-                            case 2:
+                                
+                            case 2: //With this case, we allow the user to take a look at their info, so they can check that everything's in order
+                                System.out.println("This is your information \n" + user.getUsername() + "\n" + user.getPassword() + "\n" + user.getFirstName() + "\n" + user.getLastName() + "\n" + user.getGender() + "\n" + user.getEmail() + "\n" + user.getMarital_status());
+                                break;
                                 
                             case 3:
+                                System.out.println("This are your taxes. What do you want to do? \n" + 
+                                        "1. Taxes Calculator \n" +
+                                        "2. Tax information");
+                                int option1 = sc.nextInt();
                                 
+                                switch(option1){
+                                    case 1:
+                                        System.out.println("Enter your income: ");
+                                        double income = sc.nextDouble();
+                                        double tax = TaxCalculator.calculateTax(user, income);
+                                        System.out.println("You calculated tax is: $" + tax);
+                                        break;
+                                        
+                                    case 2:
+                                        Taxes taxes = Database.getTaxes(user.getId());
+                                        TaxCalculator.getTaxInformation(user, taxes);
+                                        break;
+                                }
                         }
                     }
                 }else {
