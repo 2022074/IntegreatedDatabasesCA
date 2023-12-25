@@ -6,11 +6,11 @@ package integreateddatabasesca;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -53,7 +53,7 @@ public class Database{
             return null;
         }
     }
-
+    //This is when an user register. This method adds them to the database
     public static void insertUser(Users user) {
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              Statement stmt = conn.createStatement()) {
@@ -73,14 +73,14 @@ public class Database{
             // Handle the exception according to your application's requirements.
         }
     }
-    
+    //This is the method to review all the information of the users
     public static ArrayList<Users> getUsersList() {
         ArrayList<Users> userList = new ArrayList<>();
-
+            //This is were the connection is happenning
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              Statement stmt = conn.createStatement();
              ResultSet results = stmt.executeQuery("SELECT * FROM users;")) {
-
+                //Here are the statements to print out
             while (results.next()) {
                 String firstName = results.getString("first_name");
                 String lastName = results.getString("last_name");
@@ -91,22 +91,19 @@ public class Database{
                 String maritalStatus = results.getString("marital_status");
                 boolean bothWork = results.getBoolean("if_married_both_work");
                 boolean children = results.getBoolean("children");
-                boolean userType = results.getBoolean("admin");
+                boolean userType = results.getBoolean("user_type");
                 int employeeID = results.getInt("employee_id");
                 int id = results.getInt("user_id");
-
                 Users user = new Users(username, password, firstName, lastName, gender, email, maritalStatus, bothWork, children, id, employeeID, userType);
                 userList.add(user);
             }
-
             return userList;
-
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
         }
     }
-    
+   
     public static void removeUser(String usernameToRemove) { //This method allows the admin to remove user that they want to
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD); //It begins by making sure that they are connected as the admin
              Statement stmt = conn.createStatement()) {
@@ -157,7 +154,7 @@ public class Database{
 
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD); //It checks that the admin is the one trying to perform the method
              Statement stmt = conn.createStatement();
-             ResultSet results = stmt.executeQuery("SELECT * FROM users;")) { //And has a query to choose the users table from the database to take the information from
+             ResultSet results = stmt.executeQuery("SELECT * FROM calculations;")) { //And has a query to choose the calculations table from the database to take the information from
 
             while (results.next()) { //And we use the while loop to keep gathering info from every row according to what is being asked for and stores it in a List
                 int calculation_id = results.getInt("calculation_id");
@@ -177,5 +174,28 @@ public class Database{
             return null;
         }
     }
-    
+    //This is the method to update the profile 
+    public static boolean updateProfile(ModifyProfile user){
+            String updateQuery = "UPDATE users SET first_name=?, last_name=?, username=?, password=? WHERE id=?";
+            //Here we are getting the connection to the database 
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD); //It begins by making sure that they are connected as the admin
+            PreparedStatement pstmt = conn.prepareStatement(updateQuery)){
+            // Set parameters for the pstmt
+            pstmt.setString(1, user.getFirstName());
+            pstmt.setString(2, user.getLastName());
+            pstmt.setString(3, user.getUsername());
+            pstmt.setString(4, user.getPassword());
+            pstmt.setInt(5, user.getId());
+
+            // Execute the update
+            int rowsUpdated = pstmt.executeUpdate(updateQuery);
+
+            // Check if the update was successful
+            return rowsUpdated > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();  
+            return false;
+        }
+    }
 }
