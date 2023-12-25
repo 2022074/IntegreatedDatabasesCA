@@ -17,15 +17,17 @@ public class TaxCalculator {
         double firstBracketLimit;
         double secondBracketRate;
 
-        switch (maritalStatus) { //This switch is to differentiate between single and married users and check if they have children or not since the income tax changes depeding on those factors
+        switch (maritalStatus) { //This switch is to differentiate between single and married users and check if they have children or not since the income tax changes depending on those factors
             case "single":
-                firstBracketLimit = hasChildren ? 44000 : 40000;
+                firstBracketLimit = hasChildren ? 44000 : 40000; //This variable changes its value depeding if the single user has children or not, since they are allowed more income before they get taxed more
                 secondBracketRate = 0.4;
                 break;
+                
             case "married":
-                firstBracketLimit = bothWork ? 80000 : 49000;
+                firstBracketLimit = bothWork ? 80000 : 49000; //It is a similar case to the previous variable but the difference is that married users are allowed different values before getting taxed more
                 secondBracketRate = 0.4;
                 break;
+                
             default:
                 throw new IllegalArgumentException("Invalid marital status");
         }
@@ -44,6 +46,15 @@ public class TaxCalculator {
         }
 
         return tax;
+    }
+    
+    public static String getTaxInformation(Users user, Taxes taxes){ //This method provides the user with the main information they'll need like their total income and the amount they owe for their taxes, all of them combined
+        double calculatedTax = calculateTax(user, taxes.getIncome());
+        String taxInfo = "Tax Information for User " + 
+                         user.getUsername() + ":\n" +
+                         "Income: $" + taxes.getIncome() + "\n" +
+                         "Calculated Tax: $" + calculatedTax + "\n";
+        return taxInfo;
     }
 
     public static double calculateUSC(double income) { //This method is here for the only purpose of making use of the income of the user and checking how much they have to pay depeding on the amount earned in a year
@@ -68,8 +79,8 @@ public class TaxCalculator {
         double weeklyIncome = income / 52;
         double prsi = 0;
 
-        if (weeklyIncome > 352) {
-            prsi = income * 0.04; // 4% of income
+        if (weeklyIncome > 352) { //Using info from revenue's website, we know that if the user earns more than 352 euros each week, they get charged the standard 4% of PRSI
+            prsi = 52*(income * 0.04); // 4% of income per week, so we multiply them by 52 so we can get the yearly payment of PRSI
             return prsi;
         } else {
             return 0 ;
